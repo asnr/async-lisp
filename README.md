@@ -52,3 +52,22 @@ Await style:
 (define body (await (get-body res)))
 (print body)
 ```
+
+
+## Running the interpreter
+
+From the project root directory:
+
+```
+$ python3 async_lisp/interpreter.py lisp_examples/print.el
+```
+
+
+## Running tests
+
+From the `async_lisp` directory:
+
+```
+$ python3 -m unittest
+```
+
