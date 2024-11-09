@@ -19,6 +19,10 @@ def _evaluate_list(env: dict, aList: List):
     func_symbol = aList.elements[0]
     if not isinstance(func_symbol, Symbol):
         raise Exception(f"Function call should start with symbol, got {func_symbol}")
+    if func_symbol.name == "define":
+        # handle this specifically, because we don't want the initial symbol resolved
+        _evaluate_define(env, aList)
+        return
 
     argument_values = []
     for argument in aList.elements[1:]:
@@ -33,3 +37,15 @@ def _evaluate_element(env: dict, element: Element):
     match element:
         case String():
             return element.value
+        case Symbol():
+            return env[element.name]
+
+
+def _evaluate_define(env: dict, aList: List):
+    assert len(aList.elements) == 3
+    assert isinstance(aList.elements[1], Symbol)
+
+    [_, variable, value_expression] = aList.elements
+    value = _evaluate_element(env, value_expression)
+
+    env[variable.name] = value
