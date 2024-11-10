@@ -43,9 +43,14 @@ def _evaluate_element(env: dict, element: Element):
 
 def _evaluate_define(env: dict, aList: List):
     assert len(aList.elements) == 3
-    assert isinstance(aList.elements[1], Symbol)
 
-    [_, variable, value_expression] = aList.elements
-    value = _evaluate_element(env, value_expression)
-
-    env[variable.name] = value
+    lhs = aList.elements[1]
+    match lhs:
+        case Symbol():
+            [_, variable, value_expression] = aList.elements
+            value = _evaluate_element(env, value_expression)
+            env[variable.name] = value
+        case List():
+            func_body = lambda: _evaluate_list(env, aList.elements[2])
+            func_name = lhs.elements[0].name
+            env[func_name] = func_body
