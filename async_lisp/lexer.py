@@ -39,6 +39,10 @@ def lex(code: str) -> list[Token]:
             string_value = code[idx + 1 : string_end_idx]
             tokens.append(String(string_value))
             idx = string_end_idx
+        elif char == ";":
+            # The rest of the line is a comment, ignore it.
+            while idx < len(code) and code[idx] != "\n":
+                idx += 1
         elif char.isspace():
             ...
         else:

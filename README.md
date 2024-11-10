@@ -13,9 +13,9 @@ Stolen from racket
 ; function definition
 (define (square x) (* x x))
 
-; if
-(if (> 2 3) "2 is bigger than 3" "3 is bigger than 2")
-
+; comments start with `;`
+; (print "this won't print")
+(print "this will")
 ```
 
 
