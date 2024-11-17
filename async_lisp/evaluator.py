@@ -39,6 +39,8 @@ def _evaluate_list(env: Environment, aList: List):
 
 def _evaluate_element(env: Environment, element: Element):
     match element:
+        case List():
+            return _evaluate_list(env, element)
         case String():
             return element.value
         case Symbol():
@@ -78,7 +80,7 @@ class LispFunction(Function):
         for parameter, arg in zip(self._parameters, args):
             function_env.define(parameter, arg)
 
-        return _evaluate_list(function_env, self._body)
+        return _evaluate_element(function_env, self._body)
 
 
 class PythonFunction(Function):
