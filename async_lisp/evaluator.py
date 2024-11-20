@@ -3,6 +3,7 @@ import abc
 from environment import Environment
 from lexer import String, Symbol
 from parser import Element, List, Program
+from httpclient import fetch
 
 
 def evaluate(program: Program):
@@ -14,6 +15,7 @@ def evaluate(program: Program):
 
 def _define_builtin_functions(env: Environment):
     env.define(Symbol("print"), PythonFunction(print))
+    env.define(Symbol("fetch"), PythonFunction(fetch))
 
 
 def _evaluate_list(env: Environment, aList: List):
