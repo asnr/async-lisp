@@ -19,6 +19,8 @@ Stolen from racket
 (print "this will")
 ```
 
+Functions can only contain one statement.
+
 
 ## HTTP client program
 
