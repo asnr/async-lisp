@@ -1,3 +1,5 @@
+import abc
+
 from lexer import Symbol
 
 
@@ -21,3 +23,16 @@ class Environment:
             raise Exception(f"Environment does not contain {symbol}")
 
         return value
+
+
+class Function(abc.ABC):
+    @abc.abstractmethod
+    def call(self, env: Environment, *args): ...
+
+
+class PythonFunction(Function):
+    def __init__(self, func):
+        self._func = func
+
+    def call(self, env: Environment, *args):
+        return self._func(*args)

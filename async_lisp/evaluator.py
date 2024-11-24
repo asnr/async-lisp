@@ -1,21 +1,13 @@
-import abc
-
-from environment import Environment
+from environment import Environment, Function
+from base_environment import base_environment
 from lexer import String, Symbol
 from parser import Element, List, Program
-from httpclient import fetch
 
 
 def evaluate(program: Program):
-    env = Environment()
-    _define_builtin_functions(env)
+    env = base_environment()
     for currList in program.lists:
         _evaluate_list(env, currList)
-
-
-def _define_builtin_functions(env: Environment):
-    env.define(Symbol("print"), PythonFunction(print))
-    env.define(Symbol("fetch"), PythonFunction(fetch))
 
 
 def _evaluate_list(env: Environment, aList: List):
@@ -65,11 +57,6 @@ def _evaluate_define(env: Environment, aList: List):
             env.define(func_symbol, LispFunction(func_parameters, func_body))
 
 
-class Function(abc.ABC):
-    @abc.abstractmethod
-    def call(self, env: Environment, *args): ...
-
-
 class LispFunction(Function):
     def __init__(self, parameters: list[Symbol], body: List):
         self._parameters = parameters
@@ -83,11 +70,3 @@ class LispFunction(Function):
             function_env.define(parameter, arg)
 
         return _evaluate_element(function_env, self._body)
-
-
-class PythonFunction(Function):
-    def __init__(self, func):
-        self._func = func
-
-    def call(self, env: Environment, *args):
-        return self._func(*args)
