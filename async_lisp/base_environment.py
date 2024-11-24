@@ -1,7 +1,7 @@
 import http.client
 from urllib.parse import urlparse
 
-from environment import Environment, PythonFunction
+from environment import Environment, Function, PythonFunction
 from lexer import Symbol
 
 
@@ -16,9 +16,16 @@ def _define_builtin_functions(env: Environment):
     env.define(Symbol("fetch"), PythonFunction(fetch))
 
 
-def fetch(raw_url: str):
+def fetch(raw_url: str, callback: Function):
     url = urlparse(raw_url)
     conn = http.client.HTTPConnection(url.netloc)
     conn.request("GET", url.path)
     response = conn.getresponse()
-    print(response.status, response.reason, response.read().decode("utf-8"))
+    if response.status != 200:
+        raise Exception(f"HTTP call returned with bad status {response.status}")
+
+    # Create a new environment. Alternatively, this could pass on the
+    # environment that `fetch` was called in.
+    env = base_environment()
+    response_body = response.read().decode("utf-8")
+    callback.call(env, response_body)

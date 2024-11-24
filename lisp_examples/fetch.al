@@ -3,4 +3,4 @@
 ; Then run this Async Lisp script:
 ;   $ python3 async_lisp/interpreter.py lisp_examples/fetch.al
 
-(fetch "http://localhost:8000")
+(fetch "http://localhost:8000" print)
