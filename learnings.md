@@ -2,7 +2,7 @@
 
 ## 2 different ways of calling functions
 
-Hypothesis: every compiler, interpreter, has at least two different implementations for calling functions. One is an implementation for calling functions in the language being implemented, and another for "native"/"foreign"/"primitive" functions. The latter will include at least everything the operating system exposes.
+Hypothesis: every compiler and interpreter has at least two different implementations for calling functions. One is an implementation for calling functions in the language being implemented, and another for "native"/"foreign"/"primitive" functions. The latter will include at least everything the operating system exposes.
 
 In async-lisp, this is the difference between `LispFunction` and `PythonFunction`. The `LispFunction` ultimately runs the function by calling the evaluator code (`_evaluate_element`), while `PythonFunction` runs the function by calling the underlying python function.
 
